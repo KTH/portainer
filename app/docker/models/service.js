@@ -64,7 +64,8 @@ function ServiceViewModel(data, runningTasks, allTasks, nodes) {
     this.Command = containerSpec.Command;
     this.Arguments = containerSpec.Args;
     this.Hostname = containerSpec.Hostname;
-    this.Env = containerSpec.Env;
+    //this.Env = containerSpec.Env;
+    this.Env = [];
     this.Dir = containerSpec.Dir;
     this.User = containerSpec.User;
     this.Groups = containerSpec.Groups;

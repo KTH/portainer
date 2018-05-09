@@ -10,6 +10,13 @@ function build_and_push_images() {
   docker push "portainer/portainer:$1"
 }
 
+function build_for_kth() {
+  docker build -t "kth/portainer:$1-${VERSION}" -f build/linux/Dockerfile .
+  docker tag  "kth/portainer:$1-${VERSION}" "kth/portainer:$1"
+  #docker push "portainer/portainer:$1-${VERSION}"
+  #docker push "portainer/portainer:$1"
+}
+
 # parameter: "platform-architecture"
 function build_archive() {
   BUILD_FOLDER="${ARCHIVE_BUILD_FOLDER}/$1"
@@ -27,7 +34,7 @@ function build_all() {
     grunt "release:`echo "$tag" | tr '-' ':'`"
     name="portainer"; if [ "$(echo "$tag" | cut -c1)"  = "w" ]; then name="${name}.exe"; fi
     mv dist/portainer-$tag* dist/$name
-    if [ `echo $tag | cut -d \- -f 1` == 'linux' ]; then build_and_push_images "$tag"; fi
+    if [ `echo $tag | cut -d \- -f 1` == 'linux' ]; then build_for_kth "$tag"; fi
     build_archive "$tag"
   done
   docker rmi $(docker images -q -f dangling=true)
@@ -42,7 +49,7 @@ else
   if [ `echo "$@" | cut -c1-4` == 'echo' ]; then
     bash -c "$@";
   else
-    build_all 'linux-amd64 linux-arm linux-arm64 linux-ppc64le linux-s390x darwin-amd64 windows-amd64'
+    build_all 'linux-amd64'
     exit 0
   fi
 fi

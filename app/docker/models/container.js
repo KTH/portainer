@@ -60,6 +60,7 @@ function ContainerDetailsViewModel(data) {
   this.Args = data.Args;
   this.Image = data.Image;
   this.Config = data.Config;
+  this.Config.Env = []
   this.HostConfig = data.HostConfig;
   this.Mounts = data.Mounts;
   if (data.Portainer) {
